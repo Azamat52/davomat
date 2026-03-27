@@ -63,6 +63,9 @@ export default function Sidebar({ user, page, setPage, onLogout, theme, onToggle
       ? ROLE_LABEL[user.role](user)
       : ROLE_LABEL[user.role];
 
+  const ComplainLength = (type = true) => {
+     return  user.complains === type
+  }
   const isLight = theme === "light";
   return (
     <div className="sb">
@@ -104,6 +107,9 @@ export default function Sidebar({ user, page, setPage, onLogout, theme, onToggle
           <div>
             <div className="sb-un">{user.name}</div>
             <div className="sb-ur">{roleTag}</div>
+          </div>
+          <div className="natifications">{ComplainLength.length === 0 ? null : "🔔"}
+            <p className="checking-complain" style={{opacity: ComplainLength.length === 0 ? 0 : 1}}>{ComplainLength.length}</p>
           </div>
         </div>
 

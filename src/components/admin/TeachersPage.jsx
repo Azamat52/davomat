@@ -4,7 +4,7 @@ import { uid, ini } from "../../helpers";
 import Modal from "../Modal";
 
 const EMPTY_FORM = {
-  name: "", username: "", password: "",
+  name: "", username: "", password: "", pays: "",
   subject: "Matematika", cls: "9A", phone: "", joinDate: TODAY,
 };
 
@@ -20,7 +20,7 @@ export default function TeachersPage({ teachers, setTeachers, toast }) {
   function openAdd() { setShowAdd(true); setForm(EMPTY_FORM); setFormErr(""); }
 
   function add() {
-    if (!form.name.trim() || !form.username.trim() || !form.password.trim()) {
+    if (form.name.length === 0 || form.phone.length === 0 || form.password.length === 0 || form.pays.length === 0 || form.username.length === 0) {
       setFormErr("Majburiy maydonlarni to'ldiring!"); return;
     }
     if (teachers.find((t) => t.username === form.username)) {
@@ -47,6 +47,7 @@ export default function TeachersPage({ teachers, setTeachers, toast }) {
     ["Username *", "username", "login_nomi", "text"],
     ["Parol *", "password", "••••••", "password"],
     ["Telefon", "phone", "9X-XXX-XX-XX", "text"],
+    ["Oylik maosh", "pays", "Oylik maosh", "number"],
   ];
 
   return (

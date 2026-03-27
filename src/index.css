@@ -556,6 +556,25 @@ body {
   color: var(--t3);
 }
 
+.natifications{
+  position: relative;
+  cursor: pointer;
+  font-size: 25px;
+  padding-left: 45px;
+}
+
+.checking-complain{
+  position: absolute;
+  background: #ff0000;
+  text-align: center;
+  border-radius: 50%;
+  font-family: sans-serif;
+  font-size: 11px;
+  padding: 0px 3px;
+  right: 5px;
+  top: 8px;
+}
+
 .btn-out {
   width: 100%;
   padding: 9px;
