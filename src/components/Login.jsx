@@ -13,7 +13,7 @@ export default function Login({ onLogin, admins, teachers, students, setLogged }
 
     if (tab === "direktor" && DIREKTOR.username === u && DIREKTOR.password === p) {
       onLogin(DIREKTOR);
-      setLogged(true)
+      setLogged(true);
       return;
     }
     if (tab === 'admin') {
@@ -56,14 +56,6 @@ export default function Login({ onLogin, admins, teachers, students, setLogged }
     }
   }
   const quickList = TabSwitcher(tab)
-  // const quickList =  
-  //   tab === "admin"
-  //     ? [ADMIN]
-  //     : tab === "teacher"
-  //     ? teachers.filter((t) => t.status === "active").slice(0, 4)
-  //     : students.filter((s) => s.status === "active").slice(0, 4)
-
-
   const roleLabel = { admin: "Admin", teacher: "Ustoz", student: "O'quvchi", direktor: 'Direktor' };
   const roleClass = { admin: "hr-a", teacher: "hr-t", student: "hr-s", direktor: 'hr-d' };
 

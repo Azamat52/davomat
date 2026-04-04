@@ -295,6 +295,17 @@ body {
   top: 40%;
 }
 
+.date_parent{
+  position: relative;
+}
+
+.date{
+  font-size: 8.5px;
+  position: absolute;
+  right: 7px;
+  bottom: 3px;
+}
+
 .name{
   cursor: pointer;
   margin: 10px 0;
@@ -343,6 +354,8 @@ body {
   background: var(--s2);
   border-radius: 10px;
   border: 1px solid var(--b1);
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .hints::-webkit-scrollbar-track{
@@ -352,6 +365,7 @@ body {
 .hints::-webkit-scrollbar-button{
   border-radius: 10px;
 }
+
 .hints-ttl {
   font-size: 10.5px;
   color: var(--t4);

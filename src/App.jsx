@@ -39,6 +39,7 @@ export default function App() {
   const [complains, setComplains] = useState([]);
   const [toast, setToast] = useState({});
 
+
   // ── Theme ──
   const [theme, setTheme] = useState(
     () => localStorage.getItem("edutrack-theme") || "dark"
@@ -55,7 +56,7 @@ export default function App() {
 
   function showToast(msg, type = "ok") { setToast({ msg, type }); }
   function login(u) {
-    setUser(u); setPage("dash");
+    setUser(u); setPage("dash"); showToast("Muvofaqiyatli kirildi");
   }
   function logout() { setUser(null); setPage("dash"); }
 
@@ -92,7 +93,6 @@ export default function App() {
     }
   }
 
-  console.log(complains);
   return (
     <div className="shell">
       <Sidebar

@@ -1,7 +1,7 @@
 import {ini} from "../helpers";
 import Modal from "./Modal.jsx";
 import {useState} from "react";
-import {DIREKTOR} from "../constants.js";
+import {DIREKTOR, TODAY} from "../constants.js";
 
 const NAV_CONFIG = {
     direktor: [
@@ -61,12 +61,12 @@ const ROLE_LABEL = {
 
 export default function Sidebar({user, page, setPage, toast, onLogout, theme, onToggleTheme, admins, teachers, students, setComplains, complains }) {
     const [name, setName] = useState("");
+    const [id, setId] = useState("");
+    const [value, setValue] = useState("");
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
     const [tab, setTab] = useState("admin");
     const [formErr, setFormErr] = useState("");
-    const [form, setForm] = useState({values: ""});
-    const [id, setId] = useState(null);
     const [index, setIndex] = useState("");
     const sections = NAV_CONFIG[user.role] || [];
     const roleTag =
@@ -89,11 +89,10 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
             return students.filter((s) => s.status === "active")
         }
     }
-    const quickList = TabSwitcher(tab)
+    const quickList = TabSwitcher(tab);
     const roleLabel = { admin: "Admin", teacher: "Ustoz", student: "O'quvchi", direktor: 'Direktor' };
-
-    const role = user.role === "admin" || user.role === "teacher" || user.role === "student";
-    const checking = role && user.name === name && user.id === id
+    const roles = user.role === "admin" || user.role === "teacher" || user.role === "student"
+    const checked_complains = complains.filter((c) => c.id === user.id);
     const isLight = theme === "light";
 
     const AddClass = () => {
@@ -102,19 +101,31 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
     }
     const GetValues = (e) => {
         e.preventDefault();
-        if (form.values.length === 0) {
-            setFormErr("Shikoyatni to'ldiring");
+        if (value.length === 0) {
+            setFormErr("Shikoyatni to'ldiring"); return;
         }
-        setComplains((prev) => {
-            return quickList.filter((s) => s.name === name && s.id === id) ? [...prev, form] : prev;
-        })
-        setShow(false )
+        const selected_user = quickList.find((x) =>  x.id === id && x.name === name)
+        if (!selected_user) {
+            setFormErr("Foydalanuvchi topilmadi"); return;
+        }
+        const newComplain = {
+            value: value,
+            name: name,
+            id: id,
+            date: TODAY
+        }
+        const CatchComplain = () => {
+            setComplains((prev) => {
+                return [...prev, newComplain]
+            })
+        }
+        CatchComplain(newComplain)
+        setShow(false)
         toast("Shikoyat yuborildi")
     }
-    const NextOpening = () => { setForm({values: ""}); setFormErr(""); setShow(true); setName(""); setId(""); setIndex(""); setTab("admin"); }
-    const NextOpening_2 = () => { setFormErr(""), setShow2(true)}
-    console.log(name, id, user.role)
-    console.log(checking)
+    const NextOpening = () => { setFormErr(""); setShow(true); setName(""); setId(""); setValue(""); setIndex(""); setTab("admin"); }
+    const NextOpening_2 = () => { setFormErr(""); setShow2(true); }
+    console.log(user.id)
     return (
         <div className="sb">
             {/* Logo */}
@@ -152,17 +163,19 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
                         <div className="sb-un">{user.name}</div>
                         <div className="sb-ur">{roleTag}</div>
                     </div>
-                    {checking && (
-                        <div className="natifications" onClick={NextOpening_2} style={{display: complains.length > 0 ? null : "none" }}>🔔
-                            <p className="checking-complain">{complains.length}</p>
+                    {roles && (
+                        <div className="natifications" onClick={NextOpening_2} style={{display: checked_complains.length > 0 ? null : "none" }}>🔔
+                            <p className="checking-complain">{checked_complains.length}</p>
                         </div>)}
                     {show2 && (
                     <Modal title={"Sizga kelgan shikoyatlar"} sub={"Shikoyat"} onClose={() => setShow2(false)}>
                         <p>{DIREKTOR.name} dan</p>
                         {
-                            complains.map((c) => {
+                            checked_complains.map((c) => {
                                 return (
-                                    <div className="completed_complain"><i className="fa-solid fa-circle-exclamation"></i> {c.values}</div>
+                                    <div className="completed_complain date_parent" key={c.id}><i className="fa-solid fa-circle-exclamation"></i> {c.value}
+                                        <div className={"date"}>{c.date}</div>
+                                    </div>
                                 )
                             })
                         }
@@ -179,18 +192,18 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
                                 }))}
                             </div>
                             {/* User hints */}
-                            {quickList.length > 0 ? <div className="hints divs hidden" style={{marginBottom: "25px", maxHeight: "220px", overflowY: "auto"}}>
+                            {quickList.length > 0 ? <div className="hints divs hidden" style={{marginBottom: "25px"}}>
                                 <h3>Kimga shikoyat qilmoqchisiz?</h3>
                                 {quickList.map((x, i) => (
-                                    <div key={x.id} className="fi name" onClick={() => { setName(x.name); setId(x.id); setIndex(i); AddClass() }}>{x.length === 0 ? "Ma'lumot topilmadi 🔎" : `${i + 1} - ${x.name} Huquq(${roleLabel[x.role]})`}</div>
+                                    <div key={x.id} className="fi name" onClick={() => { setName(x.name); setId(x.id); setIndex(i); AddClass()}}>{x.length === 0 ? "Ma'lumot topilmadi 🔎" : `${i + 1} - ${x.name} Huquq(${roleLabel[x.role]})`}</div>
                                 ))}
                             </div> : <div className="hints" style={{marginBottom: "25px", color: "#cfcfcf"}}>🔎 Ma'lumot topilmadi </div>}
-                            <form className="fl">
-                                <textarea name="" id="" style={{width: "100%", height: "20vh", marginBottom: "20px"}} className="fi" placeholder={"Shikoyatingizni yozing"} onChange={(e) => setForm((p) => ({...p, values: e.target.value}))}></textarea>
+                            <form className="fl" onSubmit={GetValues}>
+                                <textarea name="" id="" style={{width: "100%", height: "20vh", marginBottom: "20px"}} className="fi" placeholder={"Shikoyatingizni yozing"} onChange={(e) => setValue(e.target.value)}></textarea>
                                 {formErr && <div className="err-box">{formErr}</div>}
                                 <button className="btn btn-rd" onClick={() => setShow(false)} style={{marginTop: "20px"}}>Bekor qilish</button>
                                 <button className="btn btn-rd" type={"reset"} style={{marginLeft: "10px"}}>Tozalash</button>
-                                <button className="btn btn-pri" type={"submit"} style={{marginLeft: "10px"}} onClick={GetValues}>Yuborish</button>
+                                <button className="btn btn-pri" style={{marginLeft: "10px"}}>Yuborish</button>
                             </form>
                         </Modal>
                 )}
