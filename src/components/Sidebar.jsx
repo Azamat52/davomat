@@ -180,7 +180,7 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
                             <div className="rtabs">
                                 {ComplainTabs.map((([id, ic, lb]) => {
                                     return (
-                                        <button key={id} className={`rt${tab === id ? " on" : ""}`} onClick={() => { setTab(tab === id ? null : id); }}>{ic} {lb} <i className={`fa-solid fa-angle-right ${tab === id ? "transform" : "" }`}></i>
+                                        <div key={id} className={`rt${tab === id ? " on" : ""}`} onClick={() => { setTab(tab === id ? null : id); }}>{ic} {lb} <i className={`fa-solid fa-angle-right ${tab === id ? "transform" : "" }`}></i>
                                             {/* User hints */}
                                             {tab === id && (
                                                 <div className={`hints divs`}>
@@ -192,7 +192,7 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
                                                     ))}
                                                 </div>
                                             )}
-                                        </button>
+                                        </div>
                                     )
                                 }))}
                             </div>

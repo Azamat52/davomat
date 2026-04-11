@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import "./index.css";
-
 import { INITIAL_TEACHERS, INITIAL_STUDENTS, INITIAL_ADMINS, INITIAL_ATTENDANCE } from "./constants";
 
 // Shared components
 import Login from "./components/Login";
 import Sidebar from "./components/Sidebar";
 import Toast from "./components/Toast";
+import Registar from "./Registar.jsx";
+import PreLoader from "./components/PreLoader.jsx";
 
 // Direktor pages
 import Payment from "./components/direktor/Payment";
@@ -27,7 +28,6 @@ import MyClass from "./components/teacher/MyClass";
 // Student pages
 import SDash from "./components/student/SDash";
 import SMyAtt from "./components/student/SMyAtt";
-import PreLoader from "./components/PreLoader.jsx";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -39,7 +39,7 @@ export default function App() {
   const [att, setAtt] = useState(INITIAL_ATTENDANCE);
   const [complains, setComplains] = useState([]);
   const [toast, setToast] = useState({});
-
+  const [path, setPath] = useState("registar");
 
   // ── Theme ──
   const [theme, setTheme] = useState(
@@ -64,13 +64,13 @@ export default function App() {
   function logout() { setUser(null); setPage("dash"); }
 
   if (!user) {
-    return <Login onLogin={login} admins={admins} teachers={teachers} students={students} setComplating={setComplating}/>;
+    if (path === "login") return <Login onLogin={login} admins={admins} teachers={teachers} students={students} setComplating={setComplating} setPath={setPath} />;
+    if (path === "registar") return <Registar students={students} setStudents={setStudents} setPath={setPath} />
   }
-
   const props = { att, setAtt, complains, setComplains, admins, setAdmins, teachers, setTeachers, students, setStudents, toast: showToast, user };
   function renderPage() {
     if (user.role === 'direktor') {
-      if (page === 'dash') return  <AdminControl {...props}/>
+      if (page === 'dash') return <AdminControl {...props}/>
       if (page === 'payment') return <Payment {...props}/>
       return <AdminControl {...props}/>
     }

@@ -8,7 +8,7 @@ function Payment({ admins, setAdmins, teachers, setTeachers, toast }) {
     const [formErr, setFormErr] = useState("");
     const [id, setId] = useState(null);
     const textField = [
-        ["Oylik maosh", "pays", "Oylik maosh ", "number"],
+        ["Oylik maosh", "pays", "Oylik maosh ($)", "number"],
     ];
     function NextOpening(){ setShow(true); setFormErr(""); setForm({pays: ""}); }
 
@@ -71,7 +71,7 @@ function Payment({ admins, setAdmins, teachers, setTeachers, toast }) {
                                         </td>
                                         <td style={{color: "var(--t4)"}} onClick={() => {t.status === "active" && setShow(true)}}>
                                             <div className={t.status === "active" ? "edit" : "un-edit"} onClick={() => setId(admins[i].id)}>
-                                                {t.status === "active" ? "Maoshni o'zgartirish" : "Maoshni o'zgartirish imkonsiz"}<i className="fa-regular fa-pen-to-square"></i>
+                                                {t.status === "active" ? "Maoshni o'zgartirish" : "Maoshni yozish imkonsiz"}<i className="fa-regular fa-pen-to-square"></i>
                                             </div>
                                         </td>
                                     </tr>

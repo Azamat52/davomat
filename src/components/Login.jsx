@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { DIREKTOR } from "../constants";
 
-export default function Login({ onLogin, admins, teachers, students, setComplating }) {
+export default function Login({ onLogin, admins, teachers, students, setComplating, setPath }) {
   const [tab, setTab] = useState("direktor");
   const [u, setU] = useState("");
   const [p, setP] = useState("");
@@ -112,7 +112,6 @@ export default function Login({ onLogin, admins, teachers, students, setComplati
           <button className="btn-go" type="submit">
             Kirish →
           </button>
-          {err && <div className="err-box">{err}</div>}
         </form>
 
         {/* Quick login hints */}
@@ -130,6 +129,7 @@ export default function Login({ onLogin, admins, teachers, students, setComplati
             </div>
           ))}
         </div>
+        <div className="auth">Ro'yhatdan o'tmoqchimisiz? <span className="both_login" onClick={() => setPath("registar")}>Ro'yhatdan o'tish</span></div>
       </div>
     </div>
   );

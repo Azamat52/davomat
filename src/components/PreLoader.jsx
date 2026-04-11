@@ -16,7 +16,6 @@ export default function PreLoader ({complating, setComplating}) {
                     return () => clearInterval(interval)
                 }
             }, [complating]);
-    console.log(complating, count)
     return (
         <div className="modal_2">
             <div className="PreLoader">

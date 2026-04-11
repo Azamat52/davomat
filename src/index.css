@@ -164,6 +164,19 @@ dot1{
   height: 8px;
 }
 
+.divs{
+  animation: height 0.57s;
+}
+
+@keyframes height{
+  from{
+    height: 0;
+  }
+  to{
+    height: 200px;
+  }
+}
+
 /* ── Animations ── */
 @keyframes up {
   from {
@@ -380,10 +393,28 @@ dot1{
   color: var(--t4);
 }
 
+.auth{
+  margin: 20px 0 0 0;
+  font-size: 13.4px;
+}
+
+.both_login{
+  padding-left: 3px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.both_login:hover{
+  text-decoration: underline;
+  color: #2727d8;
+}
+
 .divs{
   position: absolute;
-  left: 0;
-  width: 220%
+  top: 100%;
+  left: auto;
+  width: 300px;
+  z-index: 999;
 }
 
 .date_parent{
@@ -1111,8 +1142,6 @@ input[type=date].fs {
   padding: 30px;
   width: 470px;
   max-width: 93vw;
-  max-height: 92vh;
-  overflow-y: auto;
   animation: pop 0.26s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
