@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import "./index.css";
-import { INITIAL_TEACHERS, INITIAL_STUDENTS, INITIAL_ADMINS, INITIAL_ATTENDANCE } from "./constants";
+import {INITIAL_TEACHERS, INITIAL_STUDENTS, INITIAL_ADMINS, INITIAL_ATTENDANCE, DIREKTOR} from "./constants";
 
 // Shared components
 import Login from "./components/Login";
 import Sidebar from "./components/Sidebar";
 import Toast from "./components/Toast";
-import Registar from "./Registar.jsx";
+import Registar from "./components/Registar.jsx";
 import PreLoader from "./components/PreLoader.jsx";
 
 // Direktor pages
@@ -65,7 +65,7 @@ export default function App() {
 
   if (!user) {
     if (path === "login") return <Login onLogin={login} admins={admins} teachers={teachers} students={students} setComplating={setComplating} setPath={setPath} />;
-    if (path === "registar") return <Registar students={students} setStudents={setStudents} setPath={setPath} />
+    if (path === "registar") return <Registar students={students} setStudents={setStudents} admins={admins} teachers={teachers} direktor={DIREKTOR} setPath={setPath} />
   }
   const props = { att, setAtt, complains, setComplains, admins, setAdmins, teachers, setTeachers, students, setStudents, toast: showToast, user };
   function renderPage() {

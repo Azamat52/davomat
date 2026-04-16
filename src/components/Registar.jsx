@@ -1,32 +1,48 @@
-import { useState } from "react";
-import {CLASSES, TODAY} from "./constants.js";
-import {uid} from "./helpers.js";
+import {useState} from "react";
+import {CLASSES, TODAY} from "../constants.js";
+import {uid} from "../helpers.js";
 
 const EMPTY_FORM_STUDENTS = {
     name: "", username: "", password: "", cls: "", phone: "", joinDate: TODAY,
 }
 
-export default function Registar({ setStudents, students, setPath }) {
+export default function Registar({ setStudents, students, admins, teachers, direktor, setPath }) {
     const [form, setForm] = useState(EMPTY_FORM_STUDENTS)
-    const [classes, setClasses] = useState("");
     const [err, setErr] = useState("");
+    const [checkPassword, setCheckPassword] = useState({text: "", width: 0});
 
     function registar(e) {
         e.preventDefault();
 
-        if (form.username.trim() === "" || form.password.trim() === "" || classes === "") {
+        if (form.username.trim() === "" || form.password.trim() === "" || form.cls.trim() === "") {
             setErr("Majburiy mayadonlarni to'ldiring"); return;
         }
-        if (students.find((s) => s.username === form.username)) {
+        if (checkPassword.text === "Zaif parol" || checkPassword.text === "O'rtacha parol"){
+            setErr("Kuchliroq parol o'ylab toping"); return;
+        }
+        if (students.find((s) => s.username === form.username) || admins.find((s) => s.username === form.username) || teachers.find((s) => s.username === form.username) || direktor.username === form.username) {
             setErr("Bu username allaqachon mavjud"); return;
         }
         setStudents((p) => [...p,{...form, role: "student", id: uid(), status: "active"}]);
         tozalash()
     }
+    const CheckingPassword = (value) => {
+        const length = value.trim().length;
+        console.log(length)
+        if (length === 0){
+            setCheckPassword((p) => ({...p, text: "", width: 0}))
+        } else if (length <= 3) {
+            setCheckPassword(p => ({ ...p, text: "Zaif parol", width: 25 }));
+        } else if (length <= 8) {
+            setCheckPassword(p => ({ ...p, text: "O'rtacha parol", width: 66 }));
+        } else {
+            setCheckPassword(p => ({ ...p, text: "Kuchli parol", width: 100 }));
+        }
+    };
     const tozalash = () => {
         setForm(EMPTY_FORM_STUDENTS);
-        setClasses("");
         setErr("")
+        setPath("login")
     }
     return (
         <div className="lw">
@@ -62,14 +78,24 @@ export default function Registar({ setStudents, students, setPath }) {
                             className="fi"
                             type="password"
                             placeholder="••••••••"
-                            onChange={e => setForm((p) => ({...p, password: e.target.value}))}
+                            onChange={e => {
+                                setForm((p) => ({...p, password: e.target.value}));
+                                CheckingPassword(e.target.value)
+                            }}
                         />
                     </div>
+                    {checkPassword && (
+                        <div className={`Checking_password ${checkPassword.width === 0 && "hidden"}`}>
+                            <p>{checkPassword.text}</p>
+                            <div className="p_check">
+                                <div className={`p_check_in ${checkPassword.width === 25 && "red" || checkPassword.width === 66 && "orange" || checkPassword.width === 100 && "green"}`} style={{width: `${checkPassword.width}%`}}></div>
+                            </div>
+                        </div>)}
                     <div className="fl">
-                        <label htmlFor="">Sinf</label>
-                        <select name="" id="" className="fi" onChange={(e) => setClasses(e.target.value)}>
+                        <label>Sinf</label>
+                        <select name="" id="" className="fi" onChange={(e) => setForm((p) => ({...p, cls: e.target.value}))}>
                             <option value="">Sinfni tanlang</option>
-                            {CLASSES.map((c) => <option key={c} value={c}>{c}</option>)}
+                            {teachers.map((t) => <option key={t.id} value={t.cls}>{t.cls}</option>)}
                         </select>
                     </div>
                     <button className="btn-go" type="submit">

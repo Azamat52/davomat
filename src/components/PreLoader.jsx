@@ -12,21 +12,21 @@ export default function PreLoader ({complating, setComplating}) {
                             }
                             return prev + 1
                         });
-                    }, 25);
+                    }, 20);
                     return () => clearInterval(interval)
                 }
-            }, [complating]);
+            },  [complating]);
     return (
         <div className="modal_2">
             <div className="PreLoader">
                 <div className="text">
-                    <div>{count === 100 ? "Yakunlandi." : <div>Sayt yuklanmoqda<span className="dot dot1">.</span><span className="dot dot2">.</span><span className="dot dot3">.</span></div>}
-                        
+                    <div>{count === 100 ? "Yakunlandi." : (
+                        <div>Sayt yuklanmoqda<span className="dot dot1">.</span><span className="dot dot2">.</span><span className="dot dot3">.</span></div>)}
                     </div>
                     <p>{count}%</p>
                 </div>
                 <div className="bar">
-                <div className="bar_in" style={{width: `${count}%`}}></div>
+                    <div className="bar_in" style={{width: `${count}%`}}></div>
                 </div>
             </div>
         </div>

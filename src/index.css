@@ -27,6 +27,7 @@
   --t2: #94b4d4;
   --t3: #29394c;
   --t4: #2d4259;
+  --t5: #182e4c;
   --rad: 12px;
   --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.4);
   --shadow-hover: 0 10px 28px rgba(0, 0, 0, .3);
@@ -51,6 +52,7 @@
   --t2: #334155;
   --t3: #64748b;
   --t4: #94a3b8;
+  --t5: #d3d1d1;
   --shadow-card: 0 1px 6px rgba(0, 0, 0, 0.08);
   --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
@@ -107,6 +109,42 @@ body {
   font-weight: 700;
 }
 
+.Checking_password{
+  margin-bottom: 20px;
+  p{
+    color: var(--t2);
+    font-size: 12px;
+    padding-bottom: 3px;
+  }
+  .p_check{
+    background-color: var(--t5);
+    position: relative;
+    width: 100%;
+    height: 9px;
+    border-radius: 10px;
+  }
+  .p_check_in{
+    position: absolute;
+    transition: width 0.4s ease;
+    border-radius: 10px;
+    height: 80%;
+    left: 0;
+    top: 1px;
+  }
+}
+
+.red{
+  background: #ed0707;
+}
+
+.orange{
+  background: orange;
+}
+
+.green{
+  background: green;
+}
+
 .dot {
   display: inline-block;
   margin-left: 0.8px;
@@ -149,6 +187,7 @@ dot1{
   animation-delay: 0.4s;
 }
 
+
 .bar{
   border: 1px solid;
   width: 100%;
@@ -156,16 +195,15 @@ dot1{
   border-radius: 5px;
   position: relative;
 }
-
 .bar_in{
   background: var(--s4);
   position: absolute;
   border-radius: 5px;
-  height: 8px;
+  height: 9px;
 }
 
 .divs{
-  animation: height 0.57s;
+  animation: height 0.5s ease forwards;
 }
 
 @keyframes height{

@@ -9,8 +9,9 @@ export default function Login({ onLogin, admins, teachers, students, setComplati
 
   function go(e) {
     e.preventDefault();
-    setErr("");
-
+    if (u.trim() === "" || p.trim() === ""){
+      setErr("Majburiy maydonlarni to'ldiring"); return;
+    }
     if (tab === "direktor" && DIREKTOR.username === u && DIREKTOR.password === p) {
       onLogin(DIREKTOR);
       setComplating(false);
@@ -113,7 +114,7 @@ export default function Login({ onLogin, admins, teachers, students, setComplati
             Kirish →
           </button>
         </form>
-
+        {err && <div className="err-box">{err}</div>}
         {/* Quick login hints */}
         <div className="hints">
           <div className="hints-ttl">⚡ Tez kirish (bosing)</div>
