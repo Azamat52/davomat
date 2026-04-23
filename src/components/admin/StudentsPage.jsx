@@ -11,6 +11,7 @@ export default function StudentsPage({students, setStudents, att, toast}) {
     const [showAdd, setShowAdd] = useState(false);
     const [showDel, setShowDel] = useState(null);
     const [showPassword, setShowPassword] = useState(true);
+    const [checkPassword, setCheckPassword] = useState({text: "", width: 0});
     const [fCls, setFCls] = useState("all");
     const [fSt, setFSt] = useState("all");
     const [form, setForm] = useState(EMPTY_FORM);
@@ -29,6 +30,7 @@ export default function StudentsPage({students, setStudents, att, toast}) {
         setShowAdd(true);
         setForm(EMPTY_FORM);
         setFormErr("");
+        CheckingPassword("");
     }
 
     function add() {
@@ -40,6 +42,9 @@ export default function StudentsPage({students, setStudents, att, toast}) {
             setFormErr("Bu username band!");
             return;
         }
+        if (checkPassword.text === "Zaif parol" || checkPassword.text === "O'rtacha parol"){
+            setFormErr("Kuchliroq parol o'ylab toping"); return;
+        }
         setStudents((p) => [...p, {...form, id: uid(), role: "student", status: "active"}]);
         setShowAdd(false);
         toast("Yangi o'quvchi qo'shildi!");
@@ -48,7 +53,7 @@ export default function StudentsPage({students, setStudents, att, toast}) {
     function deactivate(id) {
         setStudents((p) => p.map((s) => s.id === id ? {...s, status: "inactive"} : s));
         setShowDel(null);
-        toast("O'quvchi o'chirildi", "err");
+        toast("O'quvchi maktabdan haydaldi", "err");
     }
 
     function reactivate(id) {
@@ -62,7 +67,18 @@ export default function StudentsPage({students, setStudents, att, toast}) {
         ["Parol *", "password", "••••••", `${showPassword ? "password" : "text"}`],
         ["Telefon", "phone", "9X-XXX-XX-XX", "text"],
     ];
-
+    const CheckingPassword = (value) => {
+        const length = value.trim().length;
+        if (length === 0){
+            setCheckPassword((p) => ({...p, text: "", width: 0}))
+        } else if (length <= 3) {
+            setCheckPassword(p => ({ ...p, text: "Zaif parol", width: 25 }));
+        } else if (length <= 8) {
+            setCheckPassword(p => ({ ...p, text: "O'rtacha parol", width: 66 }));
+        } else {
+            setCheckPassword(p => ({ ...p, text: "Kuchli parol", width: 100 }));
+        }
+    };
     return (
         <div>
             <div className="ph">
@@ -153,9 +169,9 @@ export default function StudentsPage({students, setStudents, att, toast}) {
                                             </div>
                                         </td>
                                         <td>
-                        <span className={`badge ${s.status === "active" ? "b-g" : "b-r"}`}>
-                          {s.status === "active" ? "✅ Faol" : "🚫 Nofaol"}
-                        </span>
+                                        <span className={`badge ${s.status === "active" ? "b-g" : "b-r"}`}>
+                                          {s.status === "active" ? "✅ Faol" : "🚫 Nofaol"}
+                                        </span>
                                         </td>
                                         <td>
                                             {s.status === "active" ? (
@@ -179,16 +195,35 @@ export default function StudentsPage({students, setStudents, att, toast}) {
             {showAdd && (
                 <Modal title="➕ Yangi o'quvchi qo'shish" sub="Ma'lumotlarni to'ldiring"
                        onClose={() => setShowAdd(false)}>
-                    {textFields.map(([label, key, placeholder, type]) => (
-                        <div key={key} className="fl">
-                            <label>{label}</label>
-                            <input className="fi" type={type} placeholder={placeholder} value={form[key]}
-                                   onChange={(e) => setForm((p) => ({...p, [key]: e.target.value}))}/>              {key === "password" && (
-                            <button className="changing_password" type="button" onClick={() => setShowPassword((prev) => !prev)}>
-                                {showPassword ? <i className="fa-regular fa-eye"></i> : <i className="fa-regular fa-eye-slash"></i>}
-                            </button>)}
-                        </div>
-                    ))}
+                    {textFields.map(([label, key, placeholder, type]) => {
+                        return(
+                            <>
+                                <div key={key} className="fl">
+                                    <label htmlFor="">{label}</label>
+                                    <input className="fi" type={type}
+                                           placeholder={placeholder} onChange={(e) => {
+                                        setForm((p) => ({...p, [key]: e.target.value}));
+                                        key === "password" && CheckingPassword(e.target.value);
+                                    }}/>
+                                    {key === "password" && (
+                                        <button className="changing_password" type="button"
+                                                onClick={() => setShowPassword((prev) => !prev)}>
+                                            {showPassword ? <i className="fa-regular fa-eye"></i> :
+                                                <i className="fa-regular fa-eye-slash"></i>}
+                                        </button>)}
+                                </div>
+                                {key === "password" && (checkPassword && (
+                                    <div className={`Checking_password ${checkPassword.width === 0 && "hidden"}`} style={{marginTop: "10px"}}>
+                                        <p>{checkPassword.text}</p>
+                                        <div className="p_check">
+                                            <div
+                                                className={`p_check_in ${checkPassword.width === 25 && "red" || checkPassword.width === 66 && "orange" || checkPassword.width === 100 && "green"}`}
+                                                style={{width: `${checkPassword.width}%`}}></div>
+                                        </div>
+                                    </div>))}
+                            </>
+                        )
+                    })}
                     <div className="fl">
                         <label>Sinfi *</label>
                         <select className="fi" value={form.cls}

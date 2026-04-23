@@ -79,25 +79,6 @@ function Payment({ admins, setAdmins, teachers, setTeachers, toast }) {
                             })}
                         </tbody>
                     </table>
-                    <div className={"Editing"}>
-                        {show && (
-                            <Modal title={"Maoshlarni o'zgartirish"} sub={"Malumotlarni to'ldiring"} onClose={() => setShow((false))}>
-                                {textField.map(([label, key, placeholder, type]) => {
-                                    return(
-                                        <div key={key} className="fl">
-                                            <label htmlFor="">{label}</label>
-                                            <input className="fi" type={type} placeholder={placeholder} onChange={(e) => setForm((p) => ({...p, [key]: e.target.value}))}/>
-                                        </div>
-                                    )
-                                })}
-                                {formErr && <div className="err-box">{formErr}</div>}
-                                <div className="mrow">
-                                    <button className="btn btn-rd" onClick={() => setShow(false)}>Bekor qilish</button>
-                                    <button className="btn btn-pri" onClick={FinishEditing}>✅ O'zgartirish</button>
-                                </div>
-                            </Modal>
-                        )}
-                    </div>
                 </div>
             </div>
             <br/><br/>
@@ -150,26 +131,26 @@ function Payment({ admins, setAdmins, teachers, setTeachers, toast }) {
                         })}
                         </tbody>
                     </table>
-                    <div className={"Editing"}>
-                        {show && (
-                            <Modal title={"Maoshlarni o'zgartirish"} sub={"Malumotlarni to'ldiring"} onClose={() => setShow((false))}>
-                                {textField.map(([label, key, placeholder, type]) => {
-                                    return(
-                                        <div key={key} className="fl">
-                                            <label htmlFor="">{label}</label>
-                                            <input className="fi" type={type} placeholder={placeholder} onChange={(e) => setForm((p) => ({...p, [key]: e.target.value}))}/>
-                                        </div>
-                                    )
-                                })}
-                                {formErr && <div className="err-box">{formErr}</div>}
-                                <div className="mrow">
-                                    <button className="btn btn-rd" onClick={() => setShow(false)}>Bekor qilish</button>
-                                    <button className="btn btn-pri" onClick={FinishEditing}>✅ O'zgartirish</button>
-                                </div>
-                            </Modal>
-                        )}
-                    </div>
                 </div>
+            </div>
+            <div className="Editing">
+                {show && (
+                    <Modal title={"Maoshlarni o'zgartirish"} sub={"Malumotlarni to'ldiring"} onClose={() => setShow((false))}>
+                        {textField.map(([label, key, placeholder, type]) => {
+                            return(
+                                <div key={key} className="fl">
+                                    <label htmlFor="">{label}</label>
+                                    <input className="fi" type={type} placeholder={placeholder} onChange={(e) => setForm((p) => ({...p, [key]: e.target.value}))}/>
+                                </div>
+                            )
+                        })}
+                        {formErr && <div className="err-box">{formErr}</div>}
+                        <div className="mrow">
+                            <button className="btn btn-rd" onClick={() => setShow(false)}>Bekor qilish</button>
+                            <button className="btn btn-pri" onClick={FinishEditing}>✅ O'zgartirish</button>
+                        </div>
+                    </Modal>
+                )}
             </div>
         </div>
     </div>

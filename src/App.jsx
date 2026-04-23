@@ -13,6 +13,7 @@ import PreLoader from "./components/PreLoader.jsx";
 
 // Direktor pages
 import Payment from "./components/direktor/Payment";
+import Tahrirlash from "./components/direktor/Tahrirlash.jsx";
 import AdminControl from "./components/direktor/AdminControl";
 
 // Admin pages
@@ -34,7 +35,7 @@ import SMyAtt from "./components/student/SMyAtt";
 export default function App() {
 
   // Using useFetch
-  const {data, loading, error} = useFetch("http://localhost:3001/all");
+  const {data, loading, error} = useFetch("http://localhost:3000/all");
   console.log(data && data)
   const [user, setUser] = useState(null);
   const [complating, setComplating] = useState(false)
@@ -46,6 +47,7 @@ export default function App() {
   const [complains, setComplains] = useState([]);
   const [toast, setToast] = useState({});
   const [path, setPath] = useState("login");
+  const [openSidebar, setOpenSidebar] = useState(true);
 
   useEffect(() => {
     if (data) {
@@ -88,6 +90,7 @@ export default function App() {
     if (user.role === 'direktor') {
       if (page === 'dash') return <AdminControl {...props}/>
       if (page === 'payment') return <Payment {...props}/>
+      if (page === "change") return <Tahrirlash {...props}/>
       return <AdminControl {...props}/>
     }
     if (user.role === "admin") {
@@ -111,10 +114,11 @@ export default function App() {
     }
   }
 
+  console.log(students.map((student) => student.pays));
   return (
       <>
-        {complating ?
-        (<div className="shell">
+        {complating ? (
+        <div className="shell">
           <Sidebar
               user={user}
               page={page}
@@ -128,9 +132,13 @@ export default function App() {
               setComplains={setComplains}
               complains={complains}
               toast={showToast}
+              openSidebar={openSidebar}
+              setOpenSidebar={setOpenSidebar}
           />
-          <main className="main">{renderPage()}</main>
-          {toast && <Toast msg={toast.msg} type={toast.type} onClose={() => setToast(null)}/>}
+          <main className={openSidebar ? "main" : "bigger_main"}>
+            {renderPage()}
+            {toast && <Toast msg={toast.msg} type={toast.type} onClose={() => setToast(null)}/>}
+          </main>
         </div>) : <PreLoader setComplating={setComplating} complating={complating}/>}
       </>
   );

@@ -43,7 +43,7 @@
     --s4: #111c2e;
     --b1: rgba(59, 130, 246, 0.12);
     --b2: rgba(59, 130, 246, 0.06);
-    --a1: #2563eb;
+    --a1: #094ce8;
     --a2: #7c3aed;
     --a3: #059669;
     --a4: #ea580c;
@@ -642,7 +642,6 @@ body {
     border-right: 1px solid var(--b1);
     display: flex;
     flex-direction: column;
-    position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
@@ -656,12 +655,16 @@ body {
     border-right: 1px solid var(--b1);
     display: flex;
     flex-direction: column;
-    position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     z-index: 200;
     transition: width 0.5s ease;
+}
+
+.sb,
+.closed-sb{
+    position: fixed;
 }
 
 .sb-head {
@@ -670,6 +673,12 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.sb-head-off{
+    border-bottom: 1px solid var(--b1);
+    text-align: center;
+    padding: 22px 0;
 }
 
 .sb-logo {
@@ -713,9 +722,8 @@ body {
     border-radius: 10px;
 }
 
-.toggle_sidebar_on:hover{
-    background: linear-gradient(135deg, rgba(96, 165, 250, .11), rgba(167, 139, 250, .11));
-    border-color: rgba(96, 165, 250, 0.2);
+.toggle_sidebar:hover{
+    background: linear-gradient(135deg, rgba(96, 165, 250), rgba(167, 139, 250, .10));
 }
 
 .sb-nav {
@@ -861,7 +869,7 @@ body {
     position: relative;
     cursor: pointer;
     font-size: 25px;
-    padding-left: 50px;
+    margin-left: 50px;
 }
 
 .number{
@@ -915,10 +923,19 @@ body {
    MAIN CONTENT
 ════════════════════════════════════════ */
 .main {
-    margin-left: 252px;
-    flex: 1;
+    margin-left: 250px;
     padding: 28px;
-    min-height: 100vh;
+    max-height: 100vh;
+    width: 100%;
+    transition: margin-left 0.5s;
+}
+
+.bigger_main{
+    margin-left: 65px;
+    padding: 28px;
+    max-height: 100vh;
+    width: 100%;
+    transition: margin-left 0.5s;
 }
 
 .ph {
@@ -927,6 +944,10 @@ body {
 }
 
 .workers {
+    animation: up 0.4s ease;
+}
+
+.users {
     animation: up 0.4s ease;
 }
 
@@ -1522,17 +1543,19 @@ input[type=date].fs {
         grid-template-columns: 1fr;
     }
 }
-
-@media (max-width: 700px) {
-    .main {
-        margin-left: 0;
-        padding: 14px;
-    }
-}
-
 /* ════════════════════════════════════════
    THEME TOGGLE
 ════════════════════════════════════════ */
+.fa-sun{
+    color: #ffcc00;
+    font-size: 15px;
+}
+
+.fa-moon{
+    color: #7c7c7c;
+    font-size: 15px;
+}
+
 .theme-toggle {
     width: 100%;
     display: flex;
@@ -1557,6 +1580,7 @@ input[type=date].fs {
 .theme-toggle-label {
     display: flex;
     align-items: center;
+    gap: 8px;
     gap: 8px;
     font-size: 13px;
     font-weight: 600;

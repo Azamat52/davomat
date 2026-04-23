@@ -10,6 +10,7 @@ const NAV_CONFIG = {
             items: [
                 {id: "dash", ic: "🛂", lb: "Adminlar Nazorati"},
                 {id: "payment", ic: "💵", lb: "Oylik Maoshlar"},
+                {id: "change", ic: "🖋️", lb: "Tahrirlash"},
             ],
         },
     ],
@@ -59,11 +60,10 @@ const ROLE_LABEL = {
     student: (u) => `👨‍🎓 ${u.cls}`,
 };
 
-export default function Sidebar({user, page, setPage, toast, onLogout, theme, onToggleTheme, admins, teachers, students, direktor, setComplains, complains }) {
+export default function Sidebar({user, page, setPage, toast, onLogout, theme, onToggleTheme, admins, teachers, students, direktor, setComplains, complains, openSidebar, setOpenSidebar}) {
     const [name, setName] = useState("");
     const [id, setId] = useState("");
     const [value, setValue] = useState("");
-    const [openSidebar, setOpenSidebar] = useState(true);
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
     const [tab, setTab] = useState("admin");
@@ -120,10 +120,11 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
     }
     const NextOpening = () => { setFormErr(""); setShow(true); setName(""); setId(""); setValue(""); setIndex(""); setTab(null); }
     const NextOpening_2 = () => { setFormErr(""); setShow2(true); }
+    console.log(openSidebar);
     return (
         <div className={openSidebar ? "sb" : "closed-sb"}>
             {/* Logo */}
-            <div className="sb-head">
+            <div className={openSidebar ? "sb-head" : "sb-head-off"}>
                 {openSidebar && (
                 <div className="sb-logo">
                     <div className="sb-li">🏫</div>
@@ -132,7 +133,7 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
                         <div className="sb-lv">v3.0</div>
                     </div>
                 </div>)}
-                <button className={openSidebar ? "toggle_sidebar_on" : "toggle_sidebar"} onClick={() => setOpenSidebar((prev) => !prev)}>
+                <button className="toggle_sidebar" onClick={() => setOpenSidebar((prev) => !prev)}>
                     <i className="fa-solid fa-bars"></i>
                 </button>
             </div>
@@ -156,7 +157,7 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
             <div className="sb-foot">
                 {/* User info */}
                 <div className={openSidebar ? "sb-user" : "sb-user-off"}>
-                    <div onClick={roles && (!openSidebar && NextOpening_2)} className={`av ${AV_CLASS[user.role]} ${!openSidebar && "openComplain"}`}>{ini(user.name)}</div>
+                    <div onClick={roles && (checked_complains.length > 0 && (!openSidebar && NextOpening_2))} className={`av ${AV_CLASS[user.role]} ${roles && (checked_complains.length > 0 && (!openSidebar && "openComplain"))}`}>{ini(user.name)}</div>
                     {openSidebar && (
                     <div>
                         <div className="sb-un">{user.name}</div>
@@ -215,8 +216,8 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
                 {/* Theme toggle */}
                 <button className="theme-toggle" onClick={onToggleTheme}>
                   <span className="theme-toggle-label">
-                      {isLight ? "☀️" : "🌙"}
-                      {openSidebar && <span>{isLight ? "Light mode" : "Dark mode"}</span>}
+                      {isLight ? <i className="fa-solid fa-moon"></i> : <i className="fa-solid fa-sun"></i>}
+                      {openSidebar && <span>{isLight ? "Dark mode" : "Light mode"}</span>}
                   </span>
                     {openSidebar && (
                     <div className={`toggle-pill${isLight ? " on" : ""}`}>
@@ -225,9 +226,10 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
                 </button>
 
                 {/* Logout */}
-                <button className="btn-out" onClick={onLogout}>🚪 {openSidebar && "Chiqish"}</button>
+                <button className="btn-out" onClick={onLogout}><i className="fa-solid fa-arrow-right-from-bracket"></i> {openSidebar && "Chiqish"}
+                </button>
             </div>
         </div>
-    //
+        //
     );
 }
