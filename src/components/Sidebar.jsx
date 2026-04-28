@@ -120,7 +120,6 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
     }
     const NextOpening = () => { setFormErr(""); setShow(true); setName(""); setId(""); setValue(""); setIndex(""); setTab(null); }
     const NextOpening_2 = () => { setFormErr(""); setShow2(true); }
-    console.log(openSidebar);
     return (
         <div className={openSidebar ? "sb" : "closed-sb"}>
             {/* Logo */}
@@ -157,7 +156,7 @@ export default function Sidebar({user, page, setPage, toast, onLogout, theme, on
             <div className="sb-foot">
                 {/* User info */}
                 <div className={openSidebar ? "sb-user" : "sb-user-off"}>
-                    <div onClick={roles && (checked_complains.length > 0 && (!openSidebar && NextOpening_2))} className={`av ${AV_CLASS[user.role]} ${roles && (checked_complains.length > 0 && (!openSidebar && "openComplain"))}`}>{ini(user.name)}</div>
+                    <div onClick={roles ? (checked_complains.length > 0 ? (openSidebar ? NextOpening_2 : undefined) : undefined) : undefined} className={`av ${AV_CLASS[user.role]} ${roles && (checked_complains.length > 0 && (!openSidebar && "openComplain"))}`}>{ini(user.name)}</div>
                     {openSidebar && (
                     <div>
                         <div className="sb-un">{user.name}</div>

@@ -1,21 +1,24 @@
 import {useEffect, useState} from "react";
 export default function PreLoader ({complating, setComplating}) {
     const [count, setCount] = useState(0);
-            useEffect(() => {
-                if (!complating) {
-                    const interval = setInterval(() => {
-                        setCount(prev => {
-                            if (prev >= 100) {
-                                clearInterval(interval);
-                                setComplating(true);
-                                return 100;
-                            }
-                            return prev + 1
-                        });
-                    }, 25);
-                    return () => clearInterval(interval)
-                }
-            },  [complating]);
+    useEffect(() => {
+        if (!complating) {
+            const interval = setInterval(() => {
+                setCount((prev) => {
+                    if (prev >= 100) return 100;
+                    return prev + 1;
+                });
+            }, 25);
+
+            return () => clearInterval(interval);
+        }
+    }, [complating]);
+
+    useEffect(() => {
+        if (count >= 100) {
+            setComplating(true);
+        }
+    }, [count]);
     return (
         <div className="modal_2">
             <div className="PreLoader">

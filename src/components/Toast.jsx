@@ -7,8 +7,11 @@ export default function Toast({ msg, type, onClose }) {
   }, []);
 
   return (
-    <div className={`toast${type === "err" ? " err-t" : ""}`}>
-      {type === "err" ? "❌" : "✅"} {msg}
-    </div>
+      <>
+        {msg && (
+        <div className={`toast${type === "err" ? " err-t" : ""}`}>
+          {type === "err" ? "❌" : "✅"} {msg}
+        </div>)}
+      </>
   );
 }

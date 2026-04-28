@@ -36,19 +36,53 @@ export default function App() {
 
   // Using useFetch
   const {data, loading, error} = useFetch("http://localhost:3000/all");
-  console.log(data && data)
-  const [user, setUser] = useState(null);
-  const [complating, setComplating] = useState(false)
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem("user");
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  const [complating, setComplating] = useState(() => {
+    const saved = localStorage.getItem("complating");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [page, setPage] = useState(() => {
+    return localStorage.getItem("page") || "dash";
+  });
+
+  const [openSidebar, setOpenSidebar] = useState(() => {
+    const saved = localStorage.getItem("sidebar");
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+  const [toast, setToast] = useState({});
   const [admins, setAdmins] = useState([])
   const [teachers, setTeachers] = useState([]);
   const [students, setStudents] = useState([]);
   const [att, setAtt] = useState([]);
-  const [page, setPage] = useState("dash");
   const [complains, setComplains] = useState([]);
-  const [toast, setToast] = useState({});
   const [path, setPath] = useState("login");
-  const [openSidebar, setOpenSidebar] = useState(true);
 
+// User localStorage
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
+
+// page
+  useEffect(() => {
+    localStorage.setItem("page", page);
+  }, [page]);
+
+// complating
+  useEffect(() => {
+    localStorage.setItem("complating", JSON.stringify(complating));
+  }, [complating]);
+
+// sidebar
+  useEffect(() => {
+    localStorage.setItem("sidebar", JSON.stringify(openSidebar));
+  }, [openSidebar]);
+
+  // Users
   useEffect(() => {
     if (data) {
       setAdmins(data.admins || []);
@@ -79,7 +113,7 @@ export default function App() {
     setPage("dash");
     showToast("Muvofaqiyatli kirildi");
   }
-  function logout() { setUser(null); setPage("dash"); }
+  function logout() { setUser(null); localStorage.removeItem("user") }
 
   if (!user) {
     if (path === "login") return <Login onLogin={login} admins={admins} teachers={teachers} students={students} direktor={data && data.direktor} setComplating={setComplating} setPath={setPath} />;
@@ -113,8 +147,6 @@ export default function App() {
       return <SDash {...props}/>
     }
   }
-
-  console.log(students.map((student) => student.pays));
   return (
       <>
         {complating ? (

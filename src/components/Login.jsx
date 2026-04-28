@@ -12,24 +12,24 @@ export default function Login({ onLogin, admins, teachers, students, direktor, s
     if (u.trim() === "" || p.trim() === ""){
       setErr("Majburiy maydonlarni to'ldiring"); return;
     }
-    if (tab === "direktor" && direktor.username === u && direktor.password === p) {
+    if (tab === "direktor" && direktor.username === u.trim() && direktor.password === p.trim()) {
       onLogin(direktor);
       setComplating(false);
       return;
     }
     if (tab === 'admin') {
       const a = admins.find(
-        (a) => a.username === u && a.password === p && a.status === 'active')
+        (a) => a.username === u.trim() && a.password === p.trim() && a.status === 'active')
       if (a) { onLogin(a); setComplating(false); return; }
     }
     if (tab === "teacher") {
       const t = teachers.find(
-        (t) => t.username === u && t.password === p && t.status === "active")
+        (t) => t.username === u.trim() && t.password === p.trim() && t.status === "active")
       if (t) { onLogin(t); setComplating(false); return; }
     }
     if (tab === "student") {
       const s = students.find(
-        (s) => s.username === u && s.password === p && s.status === "active")
+        (s) => s.username === u.trim() && s.password === p.trim() && s.status === "active")
       if (s) { onLogin(s); setComplating(false); return; }
     }
     setErr("Login yoki parol noto'g'ri!");
